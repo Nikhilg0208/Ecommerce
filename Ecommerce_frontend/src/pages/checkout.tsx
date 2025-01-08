@@ -15,7 +15,9 @@ import { RootState } from "../redux/store";
 import { NewOrderRequest } from "../types/api-types";
 import { responseToast } from "../utils/features";
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
+const stripeKey = import.meta.env.VITE_STRIPE_KEY;
+
+const stripePromise = loadStripe(stripeKey);
 
 const CheckOutForm = () => {
   const stripe = useStripe();
@@ -44,6 +46,7 @@ const CheckOutForm = () => {
 
     if (!stripe || !elements) return;
     setIsProcessing(true);
+
     const orderData: NewOrderRequest = {
       shippingInfo,
       orderItems: cartItems,
@@ -54,15 +57,18 @@ const CheckOutForm = () => {
       total,
       user: user?._id!,
     };
+
     const { paymentIntent, error } = await stripe.confirmPayment({
       elements,
       confirmParams: { return_url: window.location.origin },
       redirect: "if_required",
     });
+
     if (error) {
       setIsProcessing(false);
       return toast.error(error.message || "Something Went Wrong");
     }
+
     if (paymentIntent.status === "succeeded") {
       const res = await newOrder(orderData);
       dispatch(resetCart());
@@ -86,6 +92,7 @@ const Checkout = () => {
   const location = useLocation();
 
   const clientSecret: string | undefined = location.state;
+
   if (!clientSecret) return <Navigate to={"/shipping"} />;
 
   return (

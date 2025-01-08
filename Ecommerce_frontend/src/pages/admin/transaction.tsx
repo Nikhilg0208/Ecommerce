@@ -59,7 +59,6 @@ const Transaction = () => {
   }
 
   useEffect(() => {
-    // console.log("this is current data ", data?.orders);
     if (data)
       setRows(
         data.orders.map((i) => ({
