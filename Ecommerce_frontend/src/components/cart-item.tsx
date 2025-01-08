@@ -1,15 +1,16 @@
-import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
-import { server } from "../redux/store";
-import { CartItem as CartItemType } from "../types/types"; 
+import { Link } from "react-router-dom";
+import { CartItem } from "../types/types";
+import { transformImage } from "../utils/features";
+
 type CartItemProps = {
-  cartItem: CartItemType;
-  incrementHandler: (cartItem: CartItemType) => void;
-  decrementHandler: (cartItem: CartItemType) => void;
+  cartItem: CartItem;
+  incrementHandler: (cartItem: CartItem) => void;
+  decrementHandler: (cartItem: CartItem) => void;
   removeHandler: (id: string) => void;
 };
 
-const CartItem = ({
+const CartItemComponent = ({
   cartItem,
   incrementHandler,
   decrementHandler,
@@ -19,7 +20,7 @@ const CartItem = ({
 
   return (
     <div className="cart-item">
-      <img src={`${server}/${photo}`} alt={name} />
+      <img src={transformImage(photo)} alt={name} />
       <article>
         <Link to={`/product/${productId}`}>{name}</Link>
         <span>₹{price}</span>
@@ -38,4 +39,4 @@ const CartItem = ({
   );
 };
 
-export default CartItem;
+export default CartItemComponent;

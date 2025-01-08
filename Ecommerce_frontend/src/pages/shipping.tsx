@@ -8,9 +8,10 @@ import { saveShippingInfo } from "../redux/reducer/cartReducer";
 import { RootState, server } from "../redux/store";
 
 const Shipping = () => {
-  const { cartItems, total } = useSelector(
+  const { cartItems, coupon } = useSelector(
     (state: RootState) => state.cartReducer
   );
+  const { user } = useSelector((state: RootState) => state.userReducer);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,9 +37,11 @@ const Shipping = () => {
 
     try {
       const { data } = await axios.post(
-        `${server}/api/v1/payment/create`,
+        `${server}/api/v1/payment/create?id=${user?._id}`,
         {
-          amount: total,
+          items: cartItems,
+          shippingInfo,
+          coupon,
         },
         {
           headers: {
@@ -46,6 +49,7 @@ const Shipping = () => {
           },
         }
       );
+
       navigate("/pay", {
         state: data.clientSecret,
       });

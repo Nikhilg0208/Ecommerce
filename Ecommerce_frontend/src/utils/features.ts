@@ -1,10 +1,10 @@
 import { MessageResponse } from "../types/api-types";
-
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+import { SerializedError } from "@reduxjs/toolkit";
 import { NavigateFunction } from "react-router-dom";
 import toast from "react-hot-toast";
 import moment from "moment";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
-import { SerializedError } from "@reduxjs/toolkit";
+
 type ResType =
   | {
       data: MessageResponse;
@@ -52,4 +52,9 @@ export const getLastMonths = () => {
     last12Months,
     last6Months,
   };
+};
+
+export const transformImage = (url: string, width = 200) => {
+  const newUrl = url.replace("upload/", `upload/dpr_auto/w_${width}/`);
+  return newUrl;
 };
