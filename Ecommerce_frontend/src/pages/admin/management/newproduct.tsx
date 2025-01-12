@@ -58,7 +58,7 @@ const NewProduct = () => {
     <div className="admin-container">
       <AdminSidebar />
       <main className="product-management">
-        <article>
+        <article style={{ height: "100%" }}>
           <form onSubmit={submitHandler}>
             <h2>New Product</h2>
             <div>
